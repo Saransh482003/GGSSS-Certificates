@@ -1,0 +1,171 @@
+/* .resultsPlaceHolder{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 30rem;
+    width: 100%;
+} */
+.pageHeader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 21rem;
+    background-image: linear-gradient(to right, rgb(255, 0, 111),rgb(255, 196, 0));
+}
+.head{
+    color: white;
+    font-size: 2rem;
+}
+.headCont{
+    font-size:5rem;
+    font-weight:600;
+    color: white;
+    text-align: center;
+    margin-top:1rem;
+}
+.decInfo{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+.howHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+.placeHolder{
+    width: 80%;
+    height: 80%;
+    display: flex;
+    padding: 2rem;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: gainsboro; */
+    font-size: 2rem;
+    border-radius: 3rem;
+    color: white;
+    background-image: linear-gradient(to right, rgba(6, 13, 157),rgba(189, 9, 177));
+}
+.scoreSec{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+
+    width: 100%;
+    /* margin-top: 3rem; */
+    /* margin-bottom: 5rem; */
+}
+.scoreBoard{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border-radius: 3rem;
+    box-shadow: 0rem 0.5rem 1rem rgb(94, 94, 94);
+}
+.top3{
+    width: 50%;
+    height: auto;
+}
+.headRow{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 5rem;
+    background-color: aquamarine;
+    border-top-right-radius: 3rem;
+    border-top-left-radius: 3rem;
+    color: white;
+    font-weight: 600;
+    background-image: linear-gradient(to right, rgb(255, 0, 111),rgb(255, 196, 0));
+}
+.headers{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 20%;
+    height: 100%;
+}
+.scoreRow{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 3rem;
+}
+.score{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 21%;
+    height: 100%;
+    font-size: 1rem;
+    text-align: center;
+}
+.teacher{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    width: 100%;
+    height: 5rem;
+}
+.teachs{
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-radius: 3rem;
+    padding: 0.5rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    width: 20%;
+    font-family: "Poppins";
+    outline: none;
+    border: 0.2rem solid black;
+    /* font-size: 0.8rem; */
+}
+
+@media (max-width: 1300px){
+    .teachs{
+        font-size: 0.8rem;
+    }
+  }
+@media (max-width: 450px){
+    .teacher{
+        flex-direction: column;
+    }
+  }
+@media (max-width: 500px){
+    .headers{
+        font-size: 0.8rem;
+    }
+
+    .score{
+      font-size: 0.8rem;
+    }
+    .teachs{
+        font-size: 0.8rem;
+    }
+  }
+@media (max-width: 400px){
+    /* .score{
+      font-size: 0.7rem;
+    }
+    
+    .headers{
+        font-size: 0.7rem;
+    } */
+  }
