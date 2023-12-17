@@ -75,7 +75,7 @@ const index = () => {
         </div>
       </section>
       <section style={{height:"5rem"}} className={styler.footer}>
-        <span style={{fontSize:"1.5rem",marginLeft:"0.5rem",marginRight:"0.5rem",color:"#fd7500"}}>Saransh Saini</span> ~ web app created by 
+        <span style={{fontSize:"1.5rem",marginLeft:"0.5rem",marginRight:"0.5rem",color:"#fd7500",fontWeight:"600"}}>Saransh Saini</span> ~ web app created by 
 
       </section>
     </>
