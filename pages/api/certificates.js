@@ -3,7 +3,6 @@ import path from "path"
 export default async function handler(req, res) {
   try{
     const { teacher } = req.query;
-    console.log(teacher)
     const filePath = path.join(process.cwd(),"JSONs","GGSSS_Certificates.json")
     const data = await fs.promises.readFile(filePath,"utf-8")
     const jsonData = JSON.parse(data)
