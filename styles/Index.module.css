@@ -25,6 +25,7 @@
     color: white;
     text-align: center;
     margin-top:1rem;
+    letter-spacing:0.2rem;
 }
 .decInfo{
     display: flex;
