@@ -24,6 +24,38 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Science Exhibition Certificates
+
+Visit `http://localhost:3000/certificates` to view and download placeholder certificates for the GGSSS Begumpur School Science Exhibition.
+
+Features:
+- Teacher dropdown filter
+- Search by student name, father's name, or event
+- Download button linking to (placeholder) Google Drive certificate
+
+Data Shape (placeholder):
+```json
+{
+	"Teacher Name": [
+		{
+			"id": 1,
+			"name": "Student Name",
+			"fatherName": "Father's Name",
+			"class": "VIII",
+			"section": "A",
+			"event": "Exhibit Title",
+			"driveLink": "https://drive.google.com/...",
+			"teacher": "Teacher Name"
+		}
+	]
+}
+```
+
+To add real data later, replace the placeholder objects in `pages/api/certificates.js` with the actual teacher keys and student arrays. Maintain the same property names for seamless UI integration.
+
+Optional filtering via API: `GET /api/certificates?teacher=Ms.%20Sharma` returns only one teacher's list.
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

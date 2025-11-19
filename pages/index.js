@@ -1,85 +1,222 @@
-import React from 'react'
-import styler from "../styles/Index.module.css"
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useEffect, useState, useMemo } from 'react';
+import Head from 'next/head';
+import styles from '../styles/Index.module.css';
 
-const index = () => {
-  const [certificates, setCertificates] = useState([])
-  const [teachName, setTeachName] = useState("all")
-  const [colors, setColors] = useState(["#ffc400","rgb(94, 94, 94)","green"])
-  const handleChange = (event) => {
-    setTeachName(event.target.value)
-  };
+export default function CertificatesPage() {
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedTeacher, setSelectedTeacher] = useState('');
+  const [search, setSearch] = useState('');
+
   useEffect(() => {
-    fetch(`/api/certificates?teacher=${teachName}`).then((a) => {
-      return a.json()
-    }).then((res) => {
-      setCertificates(res)
-    })
-  }, [teachName])
+    async function fetchData() {
+      try {
+        const res = await fetch('/api/certificates');
+        if (!res.ok) throw new Error('Failed to load data');
+        const json = await res.json();
+        setData(json);
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const teachers = useMemo(() => Object.keys(data), [data]);
+
+  const students = useMemo(() => {
+    let list = [];
+    if (selectedTeacher) {
+      list = data[selectedTeacher] || [];
+    } else {
+      // Flatten all students if no teacher selected
+      list = teachers.reduce((acc, t) => acc.concat(data[t]), []);
+    }
+    if (search.trim()) {
+      const term = search.toLowerCase();
+      list = list.filter(s =>
+        s.name.toLowerCase().includes(term) ||
+        s.fatherName.toLowerCase().includes(term) ||
+        s.event.toLowerCase().includes(term)
+      );
+    }
+    return list.sort((a, b) => a.name.localeCompare(b.name));
+  }, [data, teachers, selectedTeacher, search]);
+
   return (
-    <>
-      <section className={styler.pageHeader}>
-        <div className={styler.head} style={{marginTop:"5rem"}}>Government Girls Senior Secondary School</div>
-        <div className={styler.headCont} style={{fontSize:"5rem",fontWeight:"600",marginTop:"1rem"}}>Science Exhibition Certificates</div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -50 1440 320" className={styler.path1}><path style={{marginTop:"5rem"}} fill="#ffffff" fill-opacity="1" d="M0,160L40,144C80,128,160,96,240,85.3C320,75,400,85,480,117.3C560,149,640,203,720,224C800,245,880,235,960,213.3C1040,192,1120,160,1200,149.3C1280,139,1360,149,1400,154.7L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
-      </section>
-      <h1 className={styler.howHeader}>Important Information</h1>
-      <section className={styler.scoreSec}>
-        <div className={styler.decInfo}>
-          <p className={styler.info}>1. These are your certificates for the Science Exhibition held on 3rd November.</p>
-          <p className={styler.info}>2. Choose your Science Teacher's Name from the dropdown. </p>
-          <p className={styler.info}>3. Download your certificates by clicking on the <span style={{color:"green",fontWeight:"500"}}>"Download Certificate"</span> button.</p>
+    <div className={styles.page}>
+      <Head>
+        <title>GGSSS Begumpur | Science Exhibition Certificates</title>
+        <meta name="description" content="Download science exhibition certificates for GGSSS Begumpur students." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      </Head>
+      
+      <div className={styles.heroSection}>
+        <div className={styles.particlesContainer}>
+          <div className={styles.particle}></div>
+          <div className={styles.particle}></div>
+          <div className={styles.particle}></div>
+          <div className={styles.particle}></div>
+          <div className={styles.particle}></div>
         </div>
-      </section>
-      <section className={styler.teacher}>
-        Select Your Science Teacher's Name 
-        <select name="teachs" id="teachs" className={styler.teachs} onChange={handleChange}>
-          <option value="all" className={styler.option} selected disabled>Select your Teacher</option>
-          <option value="Sarika Saini" className={styler.option}>Sarika Saini</option>
-          <option value="Seema Nayyar" className={styler.option}>Seema Nayyar</option>
-          <option value="Poonam Chaudhary" className={styler.option}>Poonam Chaudhary</option>
-          <option value="Deepika Garhwal" className={styler.option}>Deepika Garhwal</option>
-          <option value="Shashi Saini" className={styler.option}>Shashi Saini</option>
-          <option value="Sumedha Yadav" className={styler.option}>Sumedha Yadav</option>
-          <option value="Manju" className={styler.option}>Manju</option>
-          <option value="Aradhana" className={styler.option}>Aradhana</option>
-        </select>
-      </section>
-      <h1 className={styler.howHeader}>Science Exhibition Certificates</h1>
-      <section className={styler.scoreSec}>
-        <div className={styler.scoreBoard}>
-          <div className={styler.headRow}>
-            <div className={styler.headers}>Student Name</div>
-            <div className={styler.headers}>Father Name</div>
-            <div className={styler.headers} style={{width:"10%"}}>Class</div>
-            <div className={styler.headers} style={{width:"10%"}}>Section</div>
-            <div className={styler.headers}>Event</div>
-            <div className={styler.headers}>Download Certificate</div>
+        <header className={styles.header}>
+          <div className={styles.schoolLogo}>🔬</div>
+          <div className={styles.brand}>GGSSS Begumpur School [1413268]</div>
+          <h1 className={styles.title}>
+            <span className={styles.titleGradient}>Science Exhibition</span>
+            <span className={styles.titleLight}>Certificates 2025</span>
+          </h1>
+          <p className={styles.subtitle}>🏆 Celebrating Young Scientists & Innovators 🌟</p>
+          <div className={styles.stats}>
+            <div className={styles.statItem}>
+              <div className={styles.statNumber}>{students.length}</div>
+              <div className={styles.statLabel}>Participants</div>
+            </div>
+            <div className={styles.statItem}>
+              <div className={styles.statNumber}>{teachers.length}</div>
+              <div className={styles.statLabel}>Teachers</div>
+            </div>
           </div>
-          {
-            certificates.map((certificate,index)=>{
-                return <div className={styler.scoreRow} >
-                <div className={styler.score} style={{fontWeight:"500"}}>{certificate.Student_Name}</div>
-                <div className={styler.score}>{certificate.Father_Name}</div>
-                <div className={styler.score} style={{width:"10%"}}>{certificate.Class}</div>
-                <div className={styler.score} style={{width:"10%"}}>{certificate.Section}</div>
-                <div className={styler.score}>{certificate.Event}</div>
-                <Link className={styler.score} href={certificate.Link} target='_blank' style={{color:"green",fontWeight:"500"}}>Download Certificate</Link>
-
-              </div>
-            })
-          }
-
+        </header>
+      </div>
+      <section className={styles.controlsSection}>
+        <div className={styles.controlsWrapper}>
+          <div className={styles.controlGroup}>
+            <label htmlFor="teacher" className={styles.label}>
+              <span className={styles.labelIcon}>👨‍🏫</span>
+              Filter by Teacher
+            </label>
+            <select
+              id="teacher"
+              value={selectedTeacher}
+              onChange={(e) => setSelectedTeacher(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">All Teachers</option>
+              {teachers.map(t => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.controlGroup}>
+            <label htmlFor="search" className={styles.label}>
+              <span className={styles.labelIcon}>🔍</span>
+              Search Students
+            </label>
+            <input
+              id="search"
+              type="text"
+              placeholder="Search by name, parent, or event..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.input}
+            />
+          </div>
         </div>
+        {selectedTeacher && (
+          <div className={styles.filterBadge}>
+            Showing: {selectedTeacher}
+            <button onClick={() => setSelectedTeacher('')} className={styles.clearBtn}>✕</button>
+          </div>
+        )}
       </section>
-      <section style={{height:"5rem"}} className={styler.footer}>
-        <span style={{fontSize:"1.5rem",marginLeft:"0.5rem",marginRight:"0.5rem",color:"#fd7500",fontWeight:"600"}}>Saransh Saini</span> ~ web app created by 
-
-      </section>
-    </>
-  )
+      <main className={styles.mainContent}>
+        {loading && (
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>Loading certificates...</p>
+          </div>
+        )}
+        {error && (
+          <div className={styles.errorContainer}>
+            <div className={styles.errorIcon}>⚠️</div>
+            <p className={styles.errorText}>Error: {error}</p>
+          </div>
+        )}
+        {!loading && !error && (
+          <>
+            {students.length === 0 ? (
+              <div className={styles.emptyContainer}>
+                <div className={styles.emptyIcon}>🔍</div>
+                <h3 className={styles.emptyTitle}>No certificates found</h3>
+                <p className={styles.emptyText}>Try adjusting your filters or search terms</p>
+              </div>
+            ) : (
+              <>
+                <div className={styles.resultsHeader}>
+                  <h2 className={styles.resultsTitle}>Certificate Directory</h2>
+                  <div className={styles.resultsCount}>{students.length} {students.length === 1 ? 'Certificate' : 'Certificates'}</div>
+                </div>
+                <div className={styles.grid}>
+                  {students.map((student, idx) => {
+                    const girlEmojis = ['👧', '👧🏻', '👧🏼', '🙋‍♀️', '🙋🏻‍♀️', '🙋🏼‍♀️', '💁‍♀️', '💁🏻‍♀️', '🧑‍🎓', '👩‍🎓', '👩‍🔬',];
+                    const randomGirl = girlEmojis[student.id % girlEmojis.length];
+                    
+                    return (
+                    <article key={student.id} className={styles.card} style={{ animationDelay: `${idx * 0.05}s` }}>
+                      <div className={styles.cardGlow}></div>
+                      <div className={styles.cardTop}>
+                        <div className={styles.avatarCircle}>
+                          {randomGirl}
+                        </div>
+                        <span className={styles.classTag}>
+                          <span className={styles.classIcon}>🎓</span>
+                          {student.class}-{student.section}
+                        </span>
+                      </div>
+                      <div className={styles.cardBody}>
+                        <h2 className={styles.studentName}>{student.name}</h2>
+                        <div className={styles.infoGrid}>
+                          <div className={styles.infoRow}>
+                            <span className={styles.infoIcon}>👤</span>
+                            <span className={styles.infoLabel}>Father:</span>
+                            <span className={styles.infoValue}>{student.fatherName}</span>
+                          </div>
+                          <div className={styles.infoRow}>
+                            <span className={styles.infoIcon}>🔬</span>
+                            <span className={styles.infoLabel}>Event:</span>
+                            <span className={styles.infoValue}>{student.event}</span>
+                          </div>
+                          <div className={styles.infoRow}>
+                            <span className={styles.infoIcon}>👨‍🏫</span>
+                            <span className={styles.infoLabel}>Teacher:</span>
+                            <span className={styles.infoValue}>{student.teacher}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.cardFooter}>
+                        <a
+                          href={student.driveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.downloadBtn}
+                        >
+                          <span className={styles.btnIcon}>📥</span>
+                          <span>Download Certificate</span>
+                          <span className={styles.btnArrow}>→</span>
+                        </a>
+                      </div>
+                    </article>
+                  );
+                  })}
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </main>
+      <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          <p className={styles.footerText}>© 2025 GGSSS Begumpur School • Science Exhibition</p>
+          <p className={styles.footerSubtext}>Empowering young minds to explore & innovate</p>
+        </div>
+      </footer>
+    </div>
+  );
 }
-
-export default index

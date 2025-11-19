@@ -1,27 +1,84 @@
-import *  as fs from "fs"
-import path from "path"
-export default async function handler(req, res) {
-  try{
-    const { teacher } = req.query;
-    const filePath = path.join(process.cwd(),"JSONs","GGSSS_Certificates.json")
-    const data = await fs.promises.readFile(filePath,"utf-8")
-    const jsonData = JSON.parse(data)
-    if (teacher != "all"){
-      let finalData = []
-      for (let i of jsonData){
-        if (i["Teacher_Name"]==teacher){
-          finalData.push(i)
-        }
-      }
-      res.status(200).json(finalData)
-    }
-    else{
-      res.status(200).json(JSON.parse(data))
-    }
-    
-  }
-  catch (error){
-    console.error("Error reading JSON file:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  } 
+// API route to serve placeholder certificate data
+// Structure: { "Teacher Name": [ { studentObject }, ... ] }
+export default function handler(req, res) {
+	const { teacher } = req.query;
+
+	const data = {
+		"Ms. Sharma": [
+			{
+				id: 1,
+				name: "Aarav Gupta",
+				fatherName: "Rakesh Gupta",
+				class: "VIII",
+				section: "A",
+				event: "Volcano Model",
+				driveLink: "https://drive.google.com/placeholder1",
+				teacher: "Ms. Sharma"
+			},
+			{
+				id: 2,
+				name: "Ishika Verma",
+				fatherName: "Sanjay Verma",
+				class: "VIII",
+				section: "B",
+				event: "Solar System Display",
+				driveLink: "https://drive.google.com/placeholder2",
+				teacher: "Ms. Sharma"
+			}
+		],
+		"Mr. Singh": [
+			{
+				id: 3,
+				name: "Rohan Mehta",
+				fatherName: "Anil Mehta",
+				class: "IX",
+				section: "A",
+				event: "Robotics Basics",
+				driveLink: "https://drive.google.com/placeholder3",
+				teacher: "Mr. Singh"
+			},
+			{
+				id: 4,
+				name: "Sneha Patel",
+				fatherName: "Mahesh Patel",
+				class: "IX",
+				section: "C",
+				event: "Physics Experiments",
+				driveLink: "https://drive.google.com/placeholder4",
+				teacher: "Mr. Singh"
+			}
+		],
+		"Mrs. Khan": [
+			{
+				id: 5,
+				name: "Devansh Rao",
+				fatherName: "Prakash Rao",
+				class: "X",
+				section: "A",
+				event: "Chemistry Reactions",
+				driveLink: "https://drive.google.com/placeholder5",
+				teacher: "Mrs. Khan"
+			},
+			{
+				id: 6,
+				name: "Meera Jain",
+				fatherName: "Vikram Jain",
+				class: "X",
+				section: "B",
+				event: "Environmental Conservation",
+				driveLink: "https://drive.google.com/placeholder6",
+				teacher: "Mrs. Khan"
+			}
+		]
+	};
+
+	if (teacher) {
+		if (data[teacher]) {
+			return res.status(200).json({ [teacher]: data[teacher] });
+		}
+		return res.status(404).json({ error: "Teacher not found" });
+	}
+
+	res.status(200).json(data);
 }
+
