@@ -1,7 +1,10 @@
 
 
+
 .page {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   color: #fff;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -209,6 +212,7 @@
 /* Controls Section */
 .controlsSection {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto 3rem;
   padding: 0 1.5rem;
 }
@@ -219,11 +223,12 @@
   gap: 1.5rem;
   justify-content: center;
   margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 .controlGroup {
   flex: 1;
-  min-width: 280px;
+  min-width: min(100%, 280px);
   max-width: 400px;
 }
 
@@ -319,6 +324,7 @@
 /* Main Content */
 .mainContent {
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
 }
@@ -354,7 +360,8 @@
 .grid {
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  width: 100%;
 }
 
 .card {
@@ -367,6 +374,7 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   animation: cardAppear 0.6s ease backwards;
+  max-width: 100%;
 }
 
 @keyframes cardAppear {
@@ -450,12 +458,15 @@
   margin: 0 0 1.2rem;
   color: #1a1a1a;
   line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .infoGrid {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  width: 100%;
 }
 
 .infoRow {
@@ -464,20 +475,29 @@
   align-items: start;
   gap: 0.6rem;
   font-size: 0.9rem;
+  width: 100%;
+  overflow: hidden;
 }
 
 .infoIcon {
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .infoLabel {
   font-weight: 600;
   color: #666;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .infoValue {
   color: #1a1a1a;
   font-weight: 500;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cardFooter {
